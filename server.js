@@ -17,9 +17,11 @@ app.get('/', (req, res) => {
 const patientRoutes=require('./routes/patient.routes')
 const doctorRoutes=require('./routes/doctor.routes')
 const appointmentRoutes=require('./routes/appointment.routes')
+const authRoutes=require('./routes/auth.routes')
 app.use('/api/patients',patientRoutes)
 app.use('/api/doctors',doctorRoutes)
 app.use('/api/appointments',appointmentRoutes)
+app.use('/api/auth',authRoutes)
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('MongoDB Connected')

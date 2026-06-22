@@ -1,5 +1,9 @@
 const mongoose= require('mongoose')
 const  doctorSchema= new mongoose.Schema({
+    userId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User'
+        },
    name:{
     type:String,
     required:true
@@ -16,7 +20,11 @@ const  doctorSchema= new mongoose.Schema({
     unique:true
    },
    availability:{
-    type:String
+    type:[String]
+   },
+   isActive: {
+    type:Boolean,
+    default:true
    }
 
 },

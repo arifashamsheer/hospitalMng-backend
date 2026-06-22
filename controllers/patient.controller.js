@@ -2,7 +2,10 @@ const Patient=require('../models/Patient')
 exports.createPatient = async(req,res) =>{
     try
     {
-     const patient= await Patient.create(req.body)
+     const patient = await Patient.create({
+      userId: req.user.id,   
+      ...req.body
+    });
      res.status(201).json(patient)
     }
     catch(error)
@@ -55,3 +58,18 @@ exports.deletePatient=async(req,res)=>{
      res.status(500).json({error:error.message})
     }
 }
+exports.getMyProfile = async (req, res) => {
+  try {
+    const patient = await Patient.findOne({
+      userId: req.user.id
+    });
+
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    res.json(patient);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
