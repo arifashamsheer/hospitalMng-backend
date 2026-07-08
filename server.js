@@ -5,23 +5,28 @@ const cors = require('cors')
 require('dotenv').config()
 const app = express()
 // const port = 3000
-const PORT = process.env.PORT 
+const PORT = process.env.PORT || 3000
 const MONGO_URI = process.env.MONGO_URI
+
 //middleware
 app.use(cors())
 app.use(express.json())
 app.get('/', (req, res) => {
   res.send('Hospital management system API running')
 })
+
 //Routes
 const patientRoutes=require('./routes/patient.routes')
 const doctorRoutes=require('./routes/doctor.routes')
 const appointmentRoutes=require('./routes/appointment.routes')
 const authRoutes=require('./routes/auth.routes')
+
 app.use('/api/patients',patientRoutes)
 app.use('/api/doctors',doctorRoutes)
 app.use('/api/appointments',appointmentRoutes)
 app.use('/api/auth',authRoutes)
+
+
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('MongoDB Connected')

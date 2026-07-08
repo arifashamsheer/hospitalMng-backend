@@ -8,7 +8,14 @@ exports.register= async (req,res)=>{
     try
     {
   const {name,email,password,role}=req.body;
-  const hashedPassword=await bcrypt.hash(password,10)
+  const hashedPassword=await bcrypt.hash(password,10);
+
+  const checkDbUser = await User.findOne({ $or: [ { name, email } ]});
+ 
+  if(checkDbUser) {
+    return res.json({ message: "Already email and name exist" })
+  }
+
   const user=new User({
     name,
     email,
@@ -40,6 +47,7 @@ if (role === "doctor") {
  res.status(500).json({ message: error.message });
     }
 }
+
 exports.login= async (req,res)=>{
     try{
     const { email,password } =req.body;

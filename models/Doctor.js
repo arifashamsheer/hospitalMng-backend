@@ -9,7 +9,7 @@ const  doctorSchema= new mongoose.Schema({
     required:true
    },
    specialization:{
-    type:String,
+    type:String
 
    },
    phone:{
