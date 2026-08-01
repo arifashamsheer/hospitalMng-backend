@@ -1,10 +1,11 @@
 const Appointment = require('../models/Appointment')
 const Doctor=require('../models/Doctor')
+const mongoose=require('mongoose');
 exports.createDoctor = async(req,res) =>{
     try
     {
      const doctor= await Doctor.create({
-      userId: req.user.id,   
+      userId:new mongoose.Types.ObjectId(req.user.id),  
       ...req.body
     })
      res.status(201).json(doctor)
@@ -103,5 +104,90 @@ exports.getMyDoctorProfile = async (req, res) => {
     res.json(doctor);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+exports.updateDoctorStatus = async (req, res) => {
+
+  try {
+
+    const doctor = await Doctor.findById(req.params.id);
+
+    if (!doctor) {
+
+      return res.status(404).json({
+        message: "Doctor not found"
+      });
+
+    }
+
+    doctor.isActive = req.body.isActive;
+
+    await doctor.save();
+
+    res.json({
+      message: "Doctor status updated successfully",
+      doctor
+    });
+
+  }
+  catch (error) {
+
+    res.status(500).json({
+      error: error.message
+    });
+
+  }
+
+};
+
+exports.updateMyDoctorProfile = async (req, res) => {
+  try {
+    const doctor = await Doctor.findOne({
+      userId: req.user.id
+    });
+
+    if (!doctor) {
+      return res.status(404).json({
+        message: "Doctor profile not found"
+      });
+    }
+
+    const {
+      name,
+      phone,
+      specialization,
+      availability
+    } = req.body;
+
+    if (name !== undefined) {
+      doctor.name = name;
+    }
+
+    if (phone !== undefined) {
+      doctor.phone = phone;
+    }
+
+    if (specialization !== undefined) {
+      doctor.specialization = specialization;
+    }
+
+    if (availability !== undefined) {
+      if (!Array.isArray(availability)) {
+        return res.status(400).json({
+          message: "Availability must be an array"
+        });
+      }
+
+      doctor.availability = availability;
+    }
+
+    const updatedDoctor = await doctor.save();
+
+    res.status(200).json(updatedDoctor);
+
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
   }
 };

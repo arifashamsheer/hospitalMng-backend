@@ -9,7 +9,7 @@ router.post('/',auth, roleMiddleware(['patient','admin']),appointmentController.
 
 router.get('/:id',auth,roleMiddleware(['admin', 'doctor','patient']),appointmentController.getAppointmentById)
 router.put('/:id',auth,roleMiddleware(['patient','admin']),appointmentController.updateAppointment)
-router.delete('/:id',auth, roleMiddleware(['admin']),appointmentController.deleteAppointment)
+router.delete('/:id',auth, roleMiddleware(['admin','patient']),appointmentController.deleteAppointment)
 router.get('/',auth,appointmentController.getAppointments)
 router.patch('/:id/status',auth,roleMiddleware(['admin', 'doctor']),appointmentController.updatestatus)
 
