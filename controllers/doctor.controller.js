@@ -191,3 +191,35 @@ exports.updateMyDoctorProfile = async (req, res) => {
     });
   }
 };
+exports.getPublicDoctors = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const doctors =
+      await Doctor.find({
+        isActive: true
+      })
+      .select(
+        'name specialization availability profileImage'
+      );
+
+    res.status(200).json({
+      doctors
+    });
+
+  } catch (error) {
+
+    console.error(
+      'Public doctors error:',
+      error
+    );
+
+    res.status(500).json({
+      message:
+        'Unable to load doctors'
+    });
+  }
+};

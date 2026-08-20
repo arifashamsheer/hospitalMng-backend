@@ -74,16 +74,3 @@ app.use((err, req, res, next) => {
 | Database Connection and Server
 |--------------------------------------------------------------------------
 */
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    console.log('MongoDB Connected');
-
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error('Database connection error:', error.message);
-    process.exit(1);
-  });
