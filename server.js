@@ -2,7 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
+
+const connectDB = require('./config/db');
 
 const stripeWebhookController = require(
   './controllers/stripeWebhook.controller'
@@ -18,13 +19,11 @@ const paymentRoutes = require('./routes/payment.routes');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI;
 
 /*
 |--------------------------------------------------------------------------
 | Stripe Webhook
 |--------------------------------------------------------------------------
-| This must be before express.json().
 */
 app.post(
   '/api/payments/webhook',
@@ -74,3 +73,9 @@ app.use((err, req, res, next) => {
 | Database Connection and Server
 |--------------------------------------------------------------------------
 */
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  });
