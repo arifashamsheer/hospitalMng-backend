@@ -5,6 +5,8 @@ const cors = require('cors');
 
 const connectDB = require('./config/db');
 
+console.log(process.env.ARIFA)
+
 const stripeWebhookController = require(
   './controllers/stripeWebhook.controller'
 );

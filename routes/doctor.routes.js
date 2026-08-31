@@ -6,6 +6,7 @@ const roleMiddleware= require('../middleware/roleMiddleware')
 
 const doctorController=require('../controllers/doctor.controller')
 router.get('/public/list',doctorController.getPublicDoctors);
+router.get('/public/:id', doctorController.getPublicDoctorById);
 
 router.get('/me', auth, roleMiddleware(['doctor']), doctorController.getMyDoctorProfile);
 router.put('/me',auth,roleMiddleware(['doctor']),doctorController.updateMyDoctorProfile);
